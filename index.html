@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>socket io chat app</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-md-6 col-12 col-lg-6">
+                <div class="input-group">
+                    <ul id="chatHis">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-md-6 col-12 col-lg-6">
+                <div class="input-group">
+                    <input id="msgInput" class="form-control" type="text">
+                    <button onclick="send()" class="btn btn-primary">send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+
+        function send(){
+            const msg = document.getElementById('msgInput').value;
+            socket.emit('chat', msg);
+            document.getElementById('msgInput').value= '';
+        }
+
+        socket.on('chat_transfer', (data) => {
+            const msgHis = document.getElementById('chatHis');
+            let listItem = document.createElement('li');
+            listItem.textContent = data
+            msgHis.appendChild(listItem)
+        })
+    </script>
+</body>
+</html>
